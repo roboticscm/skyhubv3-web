@@ -1,0 +1,32 @@
+<script>
+    import OrgIconMark from "src/icons/org-mark.svelte";
+    import ChangeBranchModal from "./components/change-branch-modal/index.svelte";
+    import { LoginInfo } from "src/store/login-info";
+    import { App } from "src/lib/constants";
+    import { T } from "src/lib/locale";
+    
+    const { branchName$, companyName$ } = LoginInfo;
+    let changeBranchModalRef;
+
+    const showChangeBranchModal = () => {
+        changeBranchModalRef &&
+            changeBranchModalRef.show();
+    };
+
+</script>
+
+<ChangeBranchModal bind:this={changeBranchModalRef} />
+<div class="branch" on:click={showChangeBranchModal}>
+    <div
+        class="branch__logo"
+        style="display: flex; align-content: center; align-items: center;">
+        <OrgIconMark />
+    </div>
+    {#if $branchName$}
+        <div title={$companyName$} class="branch__name">{@html $branchName$}</div>
+    {:else if $branchName$ === undefined}
+        {@html App.PROGRESS_BAR}
+    {:else}
+        {T('SYS.LABEL.NO_DEPARTMENT_AVAILABLE')}
+    {/if}
+</div>
