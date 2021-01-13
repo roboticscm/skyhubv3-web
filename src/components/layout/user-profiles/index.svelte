@@ -53,7 +53,7 @@
 
     <div id="userProfilesDropdown" class="right-dropdown-content">
       <div class="user-profiles__fullname">
-        {`${$user$.lastName} ${$user$.firstName}`}
+        {Authentication.getUsername()}
       </div>
       <div on:click|stopPropagation={showUserProfiles} class="dropdown-item">
         <ProfilesIcon />

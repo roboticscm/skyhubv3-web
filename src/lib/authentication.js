@@ -21,6 +21,10 @@ export class Authentication {
         return localStorage.getItem("remember") === 'true' ? localStorage.getItem("accessToken") : sessionStorage.getItem("accessToken")
     }
 
+    static getUsername = () => {
+        return localStorage.getItem("remember") === 'true' ? localStorage.getItem("username") : sessionStorage.getItem("username")
+    }
+
     static setAccessToken = (token) => {
         if (localStorage.getItem("remember") === 'true') {
             localStorage.setItem("accessToken", token)

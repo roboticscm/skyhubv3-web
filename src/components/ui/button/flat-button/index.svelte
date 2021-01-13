@@ -76,6 +76,9 @@
       case ButtonType.config:
         preset(ButtonId.config, 'CONFIG', 'config24x24', 'btn-flat');
         break;
+      case ButtonType.viewLog:
+        preset(ButtonId.viewLog, 'VIEW_LOG', '<i class="fas fa-book-medical"></i>', 'btn-flat');
+        break;
       case ButtonType.trashRestore:
         preset(ButtonId.trashRestore, 'TRASH_RESTORE', 'trash-restore', 'btn-flat');
         break;

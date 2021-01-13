@@ -10,7 +10,7 @@
   import { MenuStore } from "src/features/system/menu/store";
 
   const { departments$ } = OrgStore;
-  const { departmentId$ } = LoginInfo
+  const { departmentId$ } = LoginInfo;
   const { branchId$ } = LoginInfo;
 
   $: if ($branchId$) {
@@ -36,15 +36,26 @@
     return {};
   };
 
+  let firstTime = true;
   const saveUserSettings = () => {
-    SettingsStore.saveUserSettings({
+    Promise.all([
+      SettingsStore.saveUserSettings(
+        {
+          keys: ["departmentId"],
+          values: [$departmentId$],
+        },
+        false
+      ),
+
+      SettingsStore.saveUserSettings({
         keys: ["departmentId"],
         values: [$departmentId$],
-      }, false);
-
-    SettingsStore.saveUserSettings({
-      keys: ["departmentId"],
-      values: [$departmentId$],
+      }),
+    ]).then(() => {
+      if(!firstTime) {
+        window.location.reload();
+      }
+      firstTime = false;
     });
   };
   const onNavigate = (event, department) => {

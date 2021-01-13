@@ -38,8 +38,7 @@
         tableRef.selectRowById(id);
         view.dataList$.pipe(skip(1), take(1)).subscribe((list) => {
           setTimeout(()=> {
-            console.log('aaa')
-            tableRef.selectRowById(id);
+            tableRef && tableRef.selectRowById(id);
           }, 200)
         });
       }
@@ -50,7 +49,7 @@
         tableRef.highlightRowById(id);
         view.dataList$.pipe(skip(1), take(1)).subscribe((list) => {
           setTimeout(()=> {
-            tableRef.highlightRowById(id);
+            tableRef && tableRef.highlightRowById(id);
           }, 200)
           
         });

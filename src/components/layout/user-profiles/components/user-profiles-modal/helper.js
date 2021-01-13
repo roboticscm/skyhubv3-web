@@ -1,6 +1,6 @@
 export const themes = [
   {
-    key: 'theme-ivory',
+    key: 'ivory',
     theme: 'Ivory',
     preview: '#FFFAF6',
   },
@@ -25,7 +25,7 @@ export const themes = [
   //   preview: '#3e2723',
   // },
   {
-    key: 'theme-ebony',
+    key: 'ebony',
     theme: 'Ebony',
     preview: '#161616',
   },

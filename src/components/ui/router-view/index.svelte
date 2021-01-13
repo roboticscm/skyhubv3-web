@@ -46,6 +46,7 @@
       searchFields = res[1].data;
       loadComponent(uri);
     });
+
   };
 
   export const show = (path) => {
@@ -64,6 +65,7 @@
     const componentSub = currentComponentUri$.subscribe((res) => {
       if (res) {
         menuPath = res.replace('features/', '').replace('/index.svelte', '');
+        LoginInfo.menuPath$.next(menuPath);
         loadRoleControlAndSearchField(res);
         window.history.pushState('', '', `${menuPath.replace('/', '--')}?d=${LoginInfo.departmentId$.value}`);
       }

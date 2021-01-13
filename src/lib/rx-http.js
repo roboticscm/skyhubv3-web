@@ -3,17 +3,17 @@ import Axios from 'axios-observable';
 import { SJSON } from 'src/lib/sjson';
 
 import { StringUtil } from 'src/lib/string-util';
-import { catchError, flatMap } from 'rxjs/operators';
-import { throwError, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { Authentication } from './authentication';
 
 export class RxHttp {
   static callApi(method, baseUrl, url, params, jsonData, headers, auth) {
     let fullUrl;
     if (params) {
-      fullUrl = `${baseUrl}/${url}${RxHttp.paramParser(params)}`;
+      fullUrl = baseUrl ? `${baseUrl}/${url}${RxHttp.paramParser(params)}` : `${url}${RxHttp.paramParser(params)}`;
     } else {
-      fullUrl = `${baseUrl}/${url}`;
+      fullUrl = baseUrl ?  `${baseUrl}/${url}` : url;
     }
 
     return Axios.request({
@@ -23,8 +23,10 @@ export class RxHttp {
       headers,
       auth,
       transformResponse: (res) => {
-
-        if (res.includes('{') || res.includes('[')) {
+        if(res.startsWith('callback(')) {
+          return JSON.parse(res.replace('callback(', '').replace(');', ''));
+        }
+        else if (res.includes('{') || res.includes('[')) {
           return SJSON.parse(res);
         } else {
           return res;
@@ -32,7 +34,7 @@ export class RxHttp {
       },
     }).pipe(
       catchError(async (err) => {
-        if (err.response.data.message==='Required Login Error' ) {
+        if (err.response && err.response.data &&  err.response.data.message==='Required Login Error' ) {
           if (Authentication.isLoggedIn()) {
             Authentication.logout();
           }
@@ -42,7 +44,7 @@ export class RxHttp {
         }
         return err;
       }),
-      flatMap(res => {
+      mergeMap(res => {
         if(res.refresh) {
           return RxHttp.callApi(method, baseUrl, url, params, jsonData, headers, auth);
         } else {

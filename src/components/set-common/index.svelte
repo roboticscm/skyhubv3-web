@@ -7,6 +7,7 @@
   import ConfirmPasswordModal from 'src/components/ui/modal/base';
   import ConfirmConflictDataModal from 'src/components/ui/modal/conflict-data-confirm';
   import ConfigModal from 'src/components/ui/modal/view-config';
+  import ViewLogModal from 'src/components/ui/modal/view-log';
   import TrashRestoreModal from 'src/components/ui/modal/trash-restore';
   import Snackbar from 'src/components/ui/snackbar';
 
@@ -20,6 +21,7 @@
   let _confirmPasswordModalRef;
   let _snackbarRef;
   let _configModalRef;
+  let _viewLogModalRef;
   let _trashRestoreModalRef;
   let _confirmConflictDataModalRef;
 
@@ -41,6 +43,10 @@
 
   export const configModalRef = () => {
     return _configModalRef;
+  };
+
+  export const viewLogModalRef = () => {
+    return _viewLogModalRef;
   };
 
   export const trashRestoreModalRef = () => {
@@ -79,4 +85,11 @@
   id={'trashRestoreModal' + view.getViewName()}
   bind:this={_trashRestoreModalRef}
   containerWidth="600px" />
+
+  <ViewLogModal
+  {menuPath}
+  subTitle={view.getViewTitle()}
+  id={'viewLogModal' + view.getViewName()}
+  bind:this={_viewLogModalRef}
+  containerWidth="500px" />
 <!--//Invisible Element-->

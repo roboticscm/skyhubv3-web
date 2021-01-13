@@ -43,23 +43,25 @@ export class SettingsStore {
                     LoginInfo.branchId$.next( res.data[0].branchId);
                     LoginInfo.branchName$.next(res.data[0].branchName);
                     LoginInfo.departmentId$.next(res.data[0].departmentId);
-                    // LoginInfo.menuPath$.next(res.data[0].menuPath);
                 }
                 
                 SettingsStore.getUserSettings({
-                    keys: 'locale,theme',
+                    key: 'lastSelected',
+                    menuPath: 'sys/user-profiles-modal',
+                    elementId: 'localeResourceUsedLanguageSelectId'
                 }).then(r => {
-                    const locale = (r.data.find((it) => it.key === 'locale') || {value: 'vi-VN'}).value
+                    let locale = 'vi-VN';
+                    if(r.data && r.data.length > 0) {
+                        locale = r.data[0].value;
+                    }
                     LoginInfo.locale$.next(locale);
-                    findLanguage(res.data[0].companyId, locale).then(() => resolve());
-    
-                    const theme = (r.data.find((it) => it.key === 'theme') || {value: 'ivory'}).value
-                    LoginInfo.theme$.next(theme);
+                    findLanguage(LoginInfo.companyId$.value, locale).then(() => resolve());
                 })
-                
-    
+
                 // load branch
-                OrgStore.findBranches().subscribe();
+                OrgStore.findBranches().subscribe(() => {
+                    
+                });
             });  
         })
     }

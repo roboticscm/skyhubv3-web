@@ -21,6 +21,7 @@
     import { Role } from '../types';
     import { LoginInfo } from 'src/store/login-info';
     import { NotifyListener } from 'src/store/notify-listener';
+    import { SkyLogStore } from 'src/store/skylog';
 
     // Props
     export let view;
@@ -28,6 +29,7 @@
     export let store;
     export let backCallback;
     export let detailTitle = '';
+  
   
     // Observable
     const { hasAnyDeletedRecord$, deleteRunning$, saveRunning$, isReadOnlyMode$, isUpdateMode$ } = view;
@@ -45,6 +47,7 @@
     // Other vars
     let selectedData;
     let saveOrUpdateSub;
+    let dataChanged;
     /**
      * Reset form (reset input and errors)
      * @param {none}
@@ -101,11 +104,11 @@
     };
   
     /**
-     * Event handle for Config button.
+     * Event handle for View Config button.
      * @param {event} Mouse click event.
      * @return {void}.
      */
-    const onConfig = (event) => {
+    const onViewConfig = (event) => {
       view.showViewConfigModal(event.currentTarget.id, scRef);
     };
   
@@ -118,6 +121,15 @@
       view.showTrashRestoreModal(event.currentTarget.id, false, scRef);
     };
   
+    /**
+     * Event handle for View Log button.
+     * @param {event} Mouse click event.
+     * @return {void}.
+     */
+     const onViewLog = (event) => {
+      view.showViewLogModal(event.currentTarget.id, scRef);
+    };
+
     const onCheckOrgTree = (event) => {
       form.errors.clear('orgId');
       form.errors.errors = { ...form.errors.errors };
@@ -141,10 +153,12 @@
   
       // check for data change
       if ($isUpdateMode$) {
-        const dataChanged = view.checkObjectChange(beforeForm, SObject.clone(form), scRef.snackbarRef());
+        dataChanged = view.checkObjectChange(beforeForm, SObject.clone(form), scRef.snackbarRef());
         if (!dataChanged) {
           return false;
         }
+
+        
       }
   
       return true;
@@ -196,6 +210,7 @@
           ),
           filter((value) => value !== 'fail') /* filter if pass verify permission*/,
           switchMap((_) => {
+            
             /* submit data to API server*/
             saveRunning$.next(true);
             return form.post(BaseUrl.SYSTEM, 'role').pipe(
@@ -211,16 +226,20 @@
             if (res.response && res.response.data) {
               // if error
               if (res.response.data.message) {
-                scRef.snackbarRef().showUnknownError(res.response.data.message);
+                scRef.snackbarRef().showUnknownError(res.response.data);
               } else {
                 form.errors.errors = form.recordErrors(res.response.data);
               }
             } else {
               // success
               if ($isUpdateMode$) {
+                SkyLogStore.save(selectedData.name, {action: 'EDIT', payload: dataChanged}).subscribe();
                 // update
                 scRef.snackbarRef().showUpdateSuccess();
-                view.needSelectId$.next(selectedData.id);
+                if(!window.isSmartPhone) {
+                  view.needSelectId$.next(selectedData.id);
+                }
+                
               } else {
                 // save
                 scRef.snackbarRef().showSaveSuccess();
@@ -244,7 +263,7 @@
         form = new Form({
           ...selectedData,
         });
-        orgTreeRef.checkNodeById(selectedData.orgId);
+        orgTreeRef && orgTreeRef.checkNodeById(selectedData.orgId);
         // save init value for checking data change
         beforeForm = SObject.clone(form);
       }
@@ -260,7 +279,6 @@
               if (!it) return EMPTY;
               return NotifyListener.payload$.pipe(
                 filter((p) => { 
-                  console.log(p.data, p.data.updatedBy, LoginInfo.getUserId());
                   return p && form.id && p.table === view.tableName && p.data.updatedBy != LoginInfo.getUserId() && p.data.id === it.id
                 })
               );
@@ -391,7 +409,7 @@
     {/if}
   
     {#if view.isRendered(ButtonId.config)}
-      <Button btnType={ButtonType.config} on:click={onConfig} disabled={view.isDisabled(ButtonId.config)} />
+      <Button btnType={ButtonType.config} on:click={onViewConfig} disabled={view.isDisabled(ButtonId.config)} />
     {/if}
   
     {#if view.isRendered(ButtonId.trashRestore, $hasAnyDeletedRecord$)}
@@ -399,6 +417,10 @@
         btnType={ButtonType.trashRestore}
         on:click={onTrashRestore}
         disabled={view.isDisabled(ButtonId.trashRestore)} />
+    {/if}
+
+    {#if view.isRendered(ButtonId.viewLog)}
+      <Button btnType={ButtonType.viewLog} on:click={onViewLog} disabled={view.isDisabled(ButtonId.viewLog)} />
     {/if}
   </section>
   <!--//Form controller-->

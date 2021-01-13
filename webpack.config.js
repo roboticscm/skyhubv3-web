@@ -9,6 +9,7 @@ const path = require('path');
 const magicImporter = require('node-sass-magic-importer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const onwarn = (warning, onwarn) => warning.code === 'css-unused-selector' || warning.code === 'a11y-no-onchange'  || onwarn(warning);
 
 const alias = {
   svelte: path.resolve('node_modules', 'svelte'),
@@ -63,6 +64,7 @@ module.exports = /*smp.wrap(*/{
             loader: 'svelte-loader-hot',
             options: {
               dev,
+              onwarn,
               hotReload: true,
               hotOptions: {
 

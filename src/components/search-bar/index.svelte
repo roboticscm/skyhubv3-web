@@ -42,6 +42,11 @@
     searching$.next(true);
     Authentication.loginAPI(username, password).then((res) => {
       if(res.accessToken) {
+        if(remember) {
+            localStorage.setItem("username", username)
+        } else {
+            sessionStorage.setItem("username", username)
+        }
         didLogin(res);
         searching$.next(false);
       }
@@ -52,7 +57,6 @@
   };
 
   const didLogin = (loginInfo) => {
-    
     loginCount = 0;
     type = 'search';
     setTimeout(() => {
@@ -61,7 +65,6 @@
     }, 1000)
     localStorage.setItem('remember', remember);
     Authentication.login(loginInfo.accessToken, loginInfo.refreshToken, loginInfo.userId);
-    // loadMenuAndUserSettings(loginInfo.companyId);
   };
 
   const onLogin = (rawData) => {

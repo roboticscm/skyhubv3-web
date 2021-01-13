@@ -1,7 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { T } from "src/lib/locale";
-  // import { menuStore, historyMenuStore } from "src/store/menu";
   import { AppStore } from "src/store/app";
   import RouterLink from "src/components/ui/router-link/index.svelte";
   import { SettingsStore } from "src/store/settings";
@@ -37,7 +36,7 @@
     Dropdown.hide("mainNavBarMoreId");
     saveSettings(event.detail.path);
     saveHistorySettings($departmentId$, event.detail.menuId);
-    // isDetailPage$.next(false);
+    isDetailPage$.next(false);
   };
 
   const saveSettings = (menuPath) => {

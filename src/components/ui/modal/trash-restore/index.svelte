@@ -1,7 +1,7 @@
 <script>
   import Modal from 'src/components/ui/modal/base/index.svelte';
   import { T } from 'src/lib/locale';
-
+  import { tick } from 'svelte';
   export let id;
   export let subTitle;
   export let containerWidth;
@@ -71,6 +71,13 @@
     return new Promise((resolve, reject) => {
       import('src/components/ui/excel-grid/index.svelte').then((res) => {
         ExcelGridComponent = res.default;
+        tick().then(() => {
+          if(excelGridRef) {
+            excelGridRef.createCheckboxHeader(fullColumns.length - 2, true);
+            excelGridRef.createCheckboxHeader(fullColumns.length - 1, true);
+          }
+           
+        });
         resolve(modalRef.show());
       });
     });
@@ -87,6 +94,10 @@
   export const getData = () => {
     return excelGridRef.getData();
   };
+
+  const onChanged = (e) => {
+    
+  }
 </script>
 
 <Modal
@@ -102,6 +113,7 @@
   bind:this={modalRef}>
   <svelte:component
     this={ExcelGridComponent}
+    on:changed={onChanged}
     {mouseUp}
     {height}
     {menuPath}

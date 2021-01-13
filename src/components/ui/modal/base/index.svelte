@@ -314,7 +314,7 @@
             {/if}
           {/if}
           {#if showCancelButton}
-            <Button showIcon={true} on:click={onCancel} btnType={ButtonType.cancelModal} title={cancelButtonTitle} />
+            <Button showIcon={true} on:click={onCancel} btnType={ButtonType.cancelModal} text={cancelButtonTitle} />
           {/if}
         </div>
       {/if}

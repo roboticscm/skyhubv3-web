@@ -10,6 +10,8 @@ import { ButtonPressed } from 'src/components/ui/button/types';
 import { getDiffFieldsObject, SObject } from 'src/lib/sobject';
 import { MenuControlStore } from 'src/store/menu-control';
 import { SDate } from 'src/lib/sdate';
+import { SkyLogStore } from 'src/store/skylog';
+import { Authentication } from 'src/lib/authentication';
 
 export class ViewStore {
     tableName = undefined;
@@ -108,7 +110,8 @@ export class ViewStore {
         TableUtilStore.softDeleteMany(this.tableName, [id])
             .subscribe({
                 next: (res) => {
-                    console.log(res)
+                    const payload = {...this.selectedData$.value, deletedBy: Authentication.getUsername(), deletedAt: SDate.newDateInMilli()};
+                    SkyLogStore.save(this.selectedData$.value.name, {action: 'DELETE', payload}).subscribe();
                     snackbarRef.showDeleteSuccess(res.data.deletedRows + ' ' + T('SYS.LABEL.RECORD'));
                 },
                 error: (err) => {
@@ -487,6 +490,28 @@ export class ViewStore {
         });
     };
 
+    showViewLogModal = (buttonId, scRef) => {
+        const confirmCallback = () => {
+            return scRef.confirmModalRef().show(`${T('SYS.MSG.SHOW_VIEW_LOG_MODAL')}. ${T('SYS.MSG.ARE_YOU_SURE')}?`);
+        };
+
+        this.verifyAction(buttonId, confirmCallback, scRef.confirmPasswordModalRef()).then((_) => {
+            SkyLogStore.findLog(this.menuPath).subscribe((res) => {
+                const data = res.data.map((row) => {
+                    row.date = row.date ? SDate.convertMillisecondToDateTimeString(parseInt(row.date)) : '';
+                    row.action = JSON.parse(row.description).action;
+                    row.view = T('SYS.LABEL.VIEW');
+                    return row;
+                });
+                scRef
+                    .viewLogModalRef()
+                    .show(data)
+                    .then((buttonPressed) => {
+                        
+                    });
+            });
+        });
+    };
 
     checkDeletedRecord = (onlyMe) => {
         TableUtilStore.hasAnyDeletedRecord(this.tableName, onlyMe).subscribe((res) => {
@@ -544,7 +569,7 @@ export class ViewStore {
                                 .map((it) => it.id)
                                 .join(',');
 
-                            TableUtilStore.restoreOrForeverDelete(this.tableName, deletedIds, restoreIds).subscribe(() => {
+                            TableUtilStore.restoreOrForeverDeleteWithLog(this.tableName, deletedIds, restoreIds).subscribe(() => {
                                 if (deletedIds && deletedIds.split(',').length === newData.length) {
                                     snackbarRef.showTrashEmpty();
                                 } else {

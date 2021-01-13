@@ -190,9 +190,10 @@
       </span>
     {/if}
     <span class={smallSize ? 'small-control-dropdown-wrapper' : 'control-dropdown-wrapper'}>
+      <!-- svelte-ignore a11y-no-onchange -->
       <select
         title={T('SYS.LABEL.PAGE_SIZE')}
-        on:blur={onPageSizeChange}
+        on:change={onPageSizeChange}
         bind:value={pageSize}
         class="bg-primary primary {smallSize ? 'small-control-dropdown' : 'control-dropdown'}">
         {#each sizes as size}

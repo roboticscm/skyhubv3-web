@@ -52,12 +52,12 @@
   });
 
   const onChanged = (instance, cell, x, y, value) => {
-    dispatch('changed', { x, y, value });
+    dispatch('changed', {instance, cell, x, y, value });
   };
 
   // TODO: param not test
   const onBeforeChange = (instance, cell, x, y, value) => {
-    dispatch('beforeChange', { x, y, value });
+    dispatch('beforeChange', {instance, cell, x, y, value });
   };
 
   const recalculateColumnWidth = () => {
@@ -145,8 +145,8 @@
   const saveSettings = (col, width) => {
     SettingsStore.saveUserSettings({
       menuPath,
-      controlId: id,
-      keys: [col + ''],
+      elementId: id,
+      keys: [`col${col}`],
       values: [width + ''],
     });
   };
@@ -260,7 +260,7 @@
     });
     SettingsStore.saveUserSettings({
       menuPath,
-      controlId: id,
+      elementId: id,
       keys,
       values,
     });

@@ -16,4 +16,5 @@ export class App {
     static AUTO_COMPLETE = 'off';
     static DEFAULT_PAGE_SIZE = 20;
     static PROGRESS_BAR = '<i class="fa fa-spinner fa-spin" />';
+    static DEFAULT_END_TIME_FILTER_OFFSET = 30 * 24 * 60 * 60 * 1000;
 }

@@ -50,4 +50,8 @@ export class SDate {
       })
     );
   }
+
+  static newDateInMilli () {
+    return new Date().valueOf();
+  }
 }

@@ -1,7 +1,6 @@
 <script>
-    import { onMount, createEventDispatcher, onDestroy } from 'svelte';
-    import { ViewStore } from 'src/store/view';
-    import { forkJoin, Observable, Subscription } from 'rxjs';
+    import { createEventDispatcher, onDestroy } from 'svelte';
+    import { forkJoin, Observable } from 'rxjs';
     import { switchMap, tap, filter } from 'rxjs/operators';
     import SimpleWorkList from 'src/components/work-list/simple-work-list';
     import { SObject } from 'src/lib/sobject';
@@ -12,10 +11,10 @@
     // Props
     export let view;
     export let menuPath;
-    export let callFrom;
+    export let store;
+    // export let callFrom;
   
     // Other vars
-    const tableId = `workList${view.getViewName()}${callFrom.replace('/', '__')}Table`;
     let selectedId = undefined;
     const dispatch = createEventDispatcher();
     let selectSub;
@@ -75,7 +74,7 @@
   
   {#if $isDetailPage$ && window.isSmartPhone}
     <section style="width: 100%;">
-      <MainContent backCallback={onClickBack} {detailTitle} {view} {menuPath} bind:this={mainContentRef} />
+      <MainContent backCallback={onClickBack} {detailTitle} {view} {menuPath} {store} bind:this={mainContentRef} />
     </section>
   {:else}
     <section class="view-left-main">

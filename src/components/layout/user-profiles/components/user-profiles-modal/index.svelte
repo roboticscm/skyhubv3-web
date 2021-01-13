@@ -6,12 +6,9 @@
   import InputField from 'src/components/ui/float-input/text-input';
   import Error from 'src/components/ui/error';
   import Form from 'src/lib/form/form';
-  import { themes, getThemeColors } from './helper';
-  // import { appStore } from 'src/store/app';
+  import { themes } from './helper';
   import { ButtonPressed } from 'src/components/ui/button/types';
   import { SettingsStore } from 'src/store/settings';
-  import RangeSlider from 'src/components/ui/range-slider/index.svelte';
-  import { Color } from 'src/lib/color';
   import { SObject } from 'src/lib/sobject';
   import { validation } from './validation';
   import Snackbar from 'src/components/ui/snackbar/index.svelte';
@@ -19,23 +16,21 @@
   import { of } from 'rxjs';
   import { StringUtil } from 'src/lib/string-util';
   import FloatSelect from 'src/components/ui/float-input/select';
-  import { onMount } from 'svelte';
-  import { errorSection } from 'src/lib/debug';
+  import { Authentication } from 'src/lib/authentication';
   import { LanguageStore } from 'src/features/system/language/store';
+  import { LoginInfo } from 'src/store/login-info';
+  import { BaseUrl } from 'src/lib/constants';
 
   const { languages$ } = LanguageStore;
 
-  // const { user$ } = appStore;
-  // const { theme$ } = appStore;
-  const user$ = of({});
-  const theme$ = of({});
+  const { theme$ } = LoginInfo;
 
   let containerWidth = '300px';
 
   const defaultWidth = 800;
   const defaultHeight = 400;
 
-  let modalRef, excelGridRef, rangeSliderRef, languageDropdownRef;
+  let modalRef, excelGridRef, languageDropdownRef;
   let ExcelGridComponent;
   let height = '200px';
 
@@ -44,9 +39,6 @@
   const menuPath = 'sys/user-profiles-modal';
 
   let currentTheme;
-  let currentAlpha = 1;
-  const MAX_STEP = 100;
-
   let snackbarRef;
 
   const columns = [
@@ -111,27 +103,26 @@
       });
       // @ts-ignore
     }).then((buttonPressed) => {
-      if (buttonPressed === ButtonPressed.OK) {
-        // appStore.theme$.next({
-        //   theme: currentTheme,
-        //   alpha: currentAlpha,
-        // });
+      if (buttonPressed === ButtonPressed.ok) {
+        theme$.next(currentTheme);
         saveTheme();
       } else {
-        // reset theme
-        // @ts-ignore
-        applyTheme($theme$.theme);
+        applyTheme($theme$);
         mappedThemes = SObject.clone(themes);
       }
     });
   };
+
+  $: if ($theme$) {
+    applyTheme($theme$);
+  }
 
   const applyTheme = (theme) => {
     const body = document.querySelector('body');
     body.className = '';
     body.style = '';
     // add new theme
-    if (theme !== 'theme-ivory') {
+    if (theme !== 'ivory') {
       body.classList.add(theme);
     }
   };
@@ -140,15 +131,12 @@
     const selectedRow = +event.detail.y;
     currentTheme = themes[selectedRow].key;
     applyTheme(currentTheme);
-    rangeSliderRef.setValue(MAX_STEP);
   };
 
   const saveTheme = () => {
     SettingsStore.saveUserSettings({
-      menuPath: 'sys/theme',
-      controlId: 'themeId',
-      keys: ['lastTheme', 'lastAlpha'],
-      values: [currentTheme, currentAlpha + ''],
+      keys: ['theme'],
+      values: [currentTheme],
     });
   };
 
@@ -168,7 +156,7 @@
         resolve(false);
       } else {
         form
-          .post('sys/auth/change-pw')
+          .put(BaseUrl.SYSTEM, 'auth/change-pw')
           .pipe(catchError((error) => of(error)))
           .subscribe(
             (res) => {
@@ -180,6 +168,10 @@
                 }
                 resolve(false);
               } else {
+                if(res.data.message === 1) {
+                  snackbarRef.show(T('SYS.MSG.CHANGE_PASSWORD_SUCCESS'));
+                }
+               
                 form = resetForm();
                 resolve(true);
               }
@@ -190,52 +182,24 @@
     });
   };
 
-  const onInputAlpha = (event) => {
-    currentAlpha = +event.target.value / MAX_STEP;
-
-    const beforeColor = getThemeColors();
-    Color.applyAlpha(beforeColor, currentAlpha);
-  };
 
   $: {
     const theme = $theme$;
     if (theme) {
       mappedThemes.map((it) => {
-        it.choose = theme.theme === it.key;
+        it.choose = theme === it.key;
         if (it.choose) {
-          currentTheme = theme.theme;
+          currentTheme = theme;
         }
 
         return it;
       });
-      currentAlpha = theme.alpha;
     }
   }
 
   const onApplyLanguage = (event) => {
-    const locale = languageDropdownRef.getSelectedId();
-    SettingsStore
-      .saveUserSettings({
-        keys: ['locale'],
-        values: [locale],
-      })
-      .then((_) => {
-        window.location.reload();
-      })
-      .catch((error) => errorSection('onApplyLanguage', error));
+    window.location.reload();
   };
-
-  let username = '';
-  onMount(() => {
-    // LanguageStore.sysGetUsedLanguages();
-    // const userSub = user$.subscribe((res) => {
-    //   username = res && res.username;
-    // });
-
-    // return () => {
-    //   userSub.unsubscribe;
-    // };
-  });
 </script>
 
 <Snackbar bind:this={snackbarRef} />
@@ -268,7 +232,7 @@
     {:else if activeTab === 'ACCOUNT'}
       <form class="form" on:keydown={(event) => form.errors.clear(event.target.name)}>
         <div>
-          <InputField readonly={true} bind:value={username} placeholder={T('SYS.LABEL.USERNAME')} />
+          <InputField readonly={true} value={Authentication.getUsername()} placeholder={T('SYS.LABEL.USERNAME')} />
         </div>
 
         <div>
@@ -310,13 +274,6 @@
           fullWidth={true}>
           <span slot="label" class="label">{T('SYS.LABEL.CONTROL_LIST')}:</span>
         </svelte:component>
-      </div>
-      <div>
-        <RangeSlider
-          on:input={onInputAlpha}
-          max={MAX_STEP}
-          bind:this={rangeSliderRef}
-          value={currentAlpha * MAX_STEP} />
       </div>
     {/if}
   </Tabs>

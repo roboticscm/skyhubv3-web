@@ -24,6 +24,10 @@
         }
       });
     });
+
+    const onRegister = () => {
+      console.log('register');
+    }
   </script>
   
   <div class="login-wrapper">
@@ -35,9 +39,12 @@
     <div class="login-search">
       <SearchBar id="mainSearchBarId" menuPath="intro" />
     </div>
-  
     <div class="login-qrcode">
       <canvas bind:this={qrcodeRef} />
+    </div>
+    <div style="padding: 10px;">
+      <!-- svelte-ignore a11y-invalid-attribute -->
+      <a href="#" on:click={onRegister}>{T('SYS.LABEL.REGISTER_NOW')}</a>
     </div>
     <div class="news">
       {#if $dataList$ && $dataList$.length > 0}

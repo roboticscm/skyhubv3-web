@@ -2,7 +2,6 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { T } from 'src/lib/locale';
   import { Observable } from 'rxjs';
-  import { take } from 'rxjs/operators';
   import { SettingsStore } from 'src/store/settings';
 
   export let id;
@@ -18,6 +17,7 @@
   export let data$ = undefined;
   export let saveState = false;
   export let showAllItem = false;
+  export let showSelectOneItem = false;
   export let value = undefined;
   export let autoLoad = false;
   export let selectedId = undefined;
@@ -44,7 +44,7 @@
     if (saveState) {
       SettingsStore.saveUserSettings({
         menuPath,
-        controlId: id,
+        elementId: id,
         keys: ['lastSelected'],
         values: [_selectedId],
       });
@@ -82,7 +82,7 @@
   export const loadSettings = () => {
     return new Observable((observer) => {
       SettingsStore
-        .getUserSettings({ elementId: id, menuPath})
+        .getUserSettings({ elementId: id, menuPath, key: 'lastSelected'})
         .then((res) => {
           if (res.data.length > 0) {
             if (res.data[0].key === 'lastSelected') {
@@ -100,9 +100,8 @@
 
   onMount(() => {
     if (autoLoad) {
-      // loadSettings()
-      //   .pipe(take(1))
-      //   .subscribe();
+      loadSettings()
+        .subscribe();
     }
   });
 
@@ -133,8 +132,9 @@
     {className}"
     bind:this={inputRef}>
 
-    <option value={null}>{T('SYS.LABEL.PLEASE_SELECT_ONE')}</option>
-
+    {#if showSelectOneItem}
+      <option value={null}>{T('SYS.LABEL.PLEASE_SELECT_ONE')}</option>
+    {/if}
     {#if showAllItem}
       <option value={undefined}>{'--- ' + T('SYS.LABEL.ALL') + ' ---'}</option>
     {/if}
