@@ -1,4 +1,3 @@
-
 import Axios from 'axios-observable';
 import { SJSON } from 'src/lib/sjson';
 
@@ -13,7 +12,7 @@ export class RxHttp {
     if (params) {
       fullUrl = baseUrl ? `${baseUrl}/${url}${RxHttp.paramParser(params)}` : `${url}${RxHttp.paramParser(params)}`;
     } else {
-      fullUrl = baseUrl ?  `${baseUrl}/${url}` : url;
+      fullUrl = baseUrl ? `${baseUrl}/${url}` : url;
     }
 
     return Axios.request({
@@ -23,10 +22,9 @@ export class RxHttp {
       headers,
       auth,
       transformResponse: (res) => {
-        if(res.startsWith('callback(')) {
+        if (res.startsWith('callback(')) {
           return JSON.parse(res.replace('callback(', '').replace(');', ''));
-        }
-        else if (res.includes('{') || res.includes('[')) {
+        } else if (res.includes('{') || res.includes('[')) {
           return SJSON.parse(res);
         } else {
           return res;
@@ -34,23 +32,23 @@ export class RxHttp {
       },
     }).pipe(
       catchError(async (err) => {
-        if (err.response && err.response.data &&  err.response.data.message==='Required Login Error' ) {
+        if (err.response && err.response.data && err.response.data.message === 'Required Login Error') {
           if (Authentication.isLoggedIn()) {
             Authentication.logout();
           }
         } else if (err.response.status === 401) {
           await Authentication.refreshAPI(Authentication.getRefreshToken());
-          return {refresh: true}
+          return { refresh: true };
         }
         return err;
       }),
-      mergeMap(res => {
-        if(res.refresh) {
+      mergeMap((res) => {
+        if (res.refresh) {
           return RxHttp.callApi(method, baseUrl, url, params, jsonData, headers, auth);
         } else {
           return of(res);
         }
-      })
+      }),
     );
   }
 

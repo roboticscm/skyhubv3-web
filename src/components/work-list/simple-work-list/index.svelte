@@ -1,17 +1,15 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import SelectableTable from "src/components/ui/selectable-table";
-  import { NotifyListener } from "src/store/notify-listener";
-  import Pagination from "src/components/ui/pagination";
-  import QuickSearch from "src/components/ui/input/quick-search";
-  import { take, skip } from "rxjs/operators";
+  import { onMount, onDestroy } from 'svelte';
+  import SelectableTable from 'src/components/ui/selectable-table';
+  import { NotifyListener } from 'src/store/notify-listener';
+  import Pagination from 'src/components/ui/pagination';
+  import QuickSearch from 'src/components/ui/input/quick-search';
+  import { take, skip } from 'rxjs/operators';
 
   export let view;
   export let menuPath;
 
-  const columns = view.customWorkListColumns
-    ? view.customWorkListColumns()
-    : view.createWorkListColumns();
+  const columns = view.customWorkListColumns ? view.customWorkListColumns() : view.createWorkListColumns();
   const { dataList$, fullCount$ } = view;
 
   let tableRef;
@@ -37,9 +35,9 @@
       if (tableRef && id) {
         tableRef.selectRowById(id);
         view.dataList$.pipe(skip(1), take(1)).subscribe((list) => {
-          setTimeout(()=> {
+          setTimeout(() => {
             tableRef && tableRef.selectRowById(id);
-          }, 200)
+          }, 200);
         });
       }
     });
@@ -48,10 +46,9 @@
       if (tableRef && id) {
         tableRef.highlightRowById(id);
         view.dataList$.pipe(skip(1), take(1)).subscribe((list) => {
-          setTimeout(()=> {
+          setTimeout(() => {
             tableRef && tableRef.highlightRowById(id);
-          }, 200)
-          
+          }, 200);
         });
       }
     });

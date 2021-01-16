@@ -121,13 +121,12 @@ export const createModal = (menuPath, widthInPixel = null, heightInPixel = null)
       return;
     }
 
-    SettingsStore
-      .getUserSettings({elementId: modalRef.id, menuPath})
+    SettingsStore.getUserSettings({ elementId: modalRef.id, menuPath })
       .then((r) => {
         const res = r.data;
-        
+
         if (res && res.length >= 4) {
-          if(modalRef) {
+          if (modalRef) {
             res.map((it) => {
               modalRef.style[it.key] = it.value;
             });

@@ -1,7 +1,6 @@
 const JSONbigString = require('json-bigint-x')({ storeAsString: true });
 
 export class SJSON {
-
   static stringify = (obj) => {
     return JSONbigString.stringify(obj);
   };

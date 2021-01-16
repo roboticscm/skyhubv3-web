@@ -86,7 +86,7 @@
   bind:this={_trashRestoreModalRef}
   containerWidth="600px" />
 
-  <ViewLogModal
+<ViewLogModal
   {menuPath}
   subTitle={view.getViewTitle()}
   id={'viewLogModal' + view.getViewName()}

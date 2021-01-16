@@ -13,7 +13,6 @@ export class StringUtil {
     return str;
   };
 
-
   static toSnackCase(str, sep) {
     let ret = '';
     for (let i = 0; i < str.length; i++) {
@@ -74,7 +73,7 @@ export class StringUtil {
 
   static toTitleCase(str) {
     if (!str) return str;
-    return str.replace(/\w\S*/g, function (txt) {
+    return str.replace(/\w\S*/g, function(txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
@@ -147,7 +146,9 @@ export class StringUtil {
       return StringUtil.replaceAll(value, '`', '');
     }
 
-    return StringUtil.unaccentVietnamese(StringUtil.replaceAll(StringUtil.replaceAll(value, ' ', ':*&') + ':*', '#', ''));
+    return StringUtil.unaccentVietnamese(
+      StringUtil.replaceAll(StringUtil.replaceAll(value, ' ', ':*&') + ':*', '#', ''),
+    );
   }
 
   static formatSearchParam(value) {
@@ -195,8 +196,6 @@ export class StringUtil {
   static countDiv(source) {
     return (source.match(/<div>/g) || []).length;
   }
-
-
 
   static markStringSearch = (source, searchs, removeAccent = true) => {
     if (!source || !searchs) {

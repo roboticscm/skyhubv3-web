@@ -51,7 +51,7 @@ export class SDate {
     );
   }
 
-  static newDateInMilli () {
+  static newDateInMilli() {
     return new Date().valueOf();
   }
 }

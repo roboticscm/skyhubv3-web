@@ -161,17 +161,17 @@
           .subscribe(
             (res) => {
               if (res.response && res.response.data) {
-                if (res.response.data.message) {
-                  snackbarRef.showUnknownError(res.response.data.message || res.response.data);
-                } else {
+                if (res.response.data.field) {
                   form.errors.errors = form.recordErrors(res.response.data);
+                } else {
+                  snackbarRef.showUnknownError(res.response.data.message || res.response.data);
                 }
                 resolve(false);
               } else {
-                if(res.data.message === 1) {
+                if (res.data.message === 1) {
                   snackbarRef.show(T('SYS.MSG.CHANGE_PASSWORD_SUCCESS'));
                 }
-               
+
                 form = resetForm();
                 resolve(true);
               }
@@ -181,7 +181,6 @@
       }
     });
   };
-
 
   $: {
     const theme = $theme$;
@@ -225,9 +224,9 @@
         bind:this={languageDropdownRef}
         id="localeResourceUsedLanguageSelectId"
         data={$languages$ ? $languages$.map((it) => {
-          it.id = it.locale;
-          return it;
-        }) : $languages$}
+              it.id = it.locale;
+              return it;
+            }) : $languages$}
         placeholder={T('SYS.LABEL.LANGUAGE')} />
     {:else if activeTab === 'ACCOUNT'}
       <form class="form" on:keydown={(event) => form.errors.clear(event.target.name)}>
@@ -244,10 +243,7 @@
         </div>
 
         <div>
-          <PasswordField
-            name="newPassword"
-            bind:value={form.newPassword}
-            placeholder={T('SYS.LABEL.NEW_PASSWORD')} />
+          <PasswordField name="newPassword" bind:value={form.newPassword} placeholder={T('SYS.LABEL.NEW_PASSWORD')} />
           <Error {form} field="newPassword" />
         </div>
 

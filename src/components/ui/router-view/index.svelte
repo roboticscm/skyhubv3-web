@@ -30,10 +30,7 @@
   };
 
   const loadRoleControlAndSearchField = (uri) => {
-    const roleControl$ = RoleControlStore.findRoleControls(
-      LoginInfo.departmentId$.value,
-      menuPath
-    );
+    const roleControl$ = RoleControlStore.findRoleControls(LoginInfo.departmentId$.value, menuPath);
 
     const searchField$ = SearchUtilStore.findSearchFields(menuPath);
 
@@ -46,7 +43,6 @@
       searchFields = res[1].data;
       loadComponent(uri);
     });
-
   };
 
   export const show = (path) => {

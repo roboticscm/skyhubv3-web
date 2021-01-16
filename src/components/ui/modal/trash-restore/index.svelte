@@ -72,11 +72,10 @@
       import('src/components/ui/excel-grid/index.svelte').then((res) => {
         ExcelGridComponent = res.default;
         tick().then(() => {
-          if(excelGridRef) {
+          if (excelGridRef) {
             excelGridRef.createCheckboxHeader(fullColumns.length - 2, true);
             excelGridRef.createCheckboxHeader(fullColumns.length - 1, true);
           }
-           
         });
         resolve(modalRef.show());
       });
@@ -95,9 +94,7 @@
     return excelGridRef.getData();
   };
 
-  const onChanged = (e) => {
-    
-  }
+  const onChanged = (e) => {};
 </script>
 
 <Modal

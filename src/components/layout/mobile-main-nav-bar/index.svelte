@@ -3,7 +3,7 @@
   import { AppStore } from 'src/store/app';
   import RouterLink from 'src/components/ui/router-link/index.svelte';
   import { SettingsStore } from 'src/store/settings';
-  import { LoginInfo } from "src/store/login-info";
+  import { LoginInfo } from 'src/store/login-info';
   import { Dropdown } from 'src/lib/dropdown';
 
   const { departmentId$ } = LoginInfo;
@@ -11,17 +11,20 @@
   const { menu$ } = MenuStore;
 
   const onNavigate = (event) => {
-    Dropdown.hide("mobileMainNavBarId");
+    Dropdown.hide('mobileMainNavBarId');
     saveSettings(event.detail.path);
     saveHistorySettings($departmentId$, event.detail.menuId);
     isDetailPage$.next(false);
   };
 
   const saveSettings = (menuPath) => {
-    SettingsStore.saveUserSettings({
-      keys: ["menuPath"],
-      values: [menuPath.startsWith("/") ? menuPath.slice(1) : menuPath],
-    }, false);
+    SettingsStore.saveUserSettings(
+      {
+        keys: ['menuPath'],
+        values: [menuPath.startsWith('/') ? menuPath.slice(1) : menuPath],
+      },
+      false,
+    );
   };
 
   const saveHistorySettings = (depId, menuId) => {

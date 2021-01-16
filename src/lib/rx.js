@@ -2,8 +2,7 @@ import { fromEvent, merge, EMPTY } from 'rxjs';
 
 export const fromEvents = (dom, ...eventNames) => {
   return eventNames.reduce((prev, name) => merge(prev, fromEvent(dom, name)), EMPTY);
-}
-
+};
 
 export const debounceTime = (ms, fn) => {
   let timer;

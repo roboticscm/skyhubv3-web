@@ -81,8 +81,7 @@
 
   export const loadSettings = () => {
     return new Observable((observer) => {
-      SettingsStore
-        .getUserSettings({ elementId: id, menuPath, key: 'lastSelected'})
+      SettingsStore.getUserSettings({ elementId: id, menuPath, key: 'lastSelected' })
         .then((res) => {
           if (res.data.length > 0) {
             if (res.data[0].key === 'lastSelected') {
@@ -100,8 +99,7 @@
 
   onMount(() => {
     if (autoLoad) {
-      loadSettings()
-        .subscribe();
+      loadSettings().subscribe();
     }
   });
 
@@ -149,7 +147,8 @@
 
   </select>
 
-  <label for={name}
+  <label
+    for={name}
     on:click|stopPropagation={onClickLabel}
     class="floating__label {disabled ? 'disabled' : ''}"
     data-content={placeholder} />

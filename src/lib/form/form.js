@@ -58,7 +58,12 @@ export default class Form {
   }
 
   recordErrors(errors) {
-    this.errors.record(errors);
+    if (errors.field) {
+      this.errors.record({ [errors.field]: errors.message });
+    } else {
+      this.errors.record(errors);
+    }
+
     return this.errors.errors;
   }
 }

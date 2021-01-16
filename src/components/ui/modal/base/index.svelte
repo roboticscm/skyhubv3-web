@@ -45,7 +45,8 @@
   let passwordRef, inputNumberRef;
   let displayPasswordChar = passwordChar();
   let disabled = false;
-  let minValue = 1, maxValue = undefined;
+  let minValue = 1,
+    maxValue = undefined;
   const useModal = createModal(menuPath, defaultWidth, defaultHeight);
 
   const onResize = (event) => {

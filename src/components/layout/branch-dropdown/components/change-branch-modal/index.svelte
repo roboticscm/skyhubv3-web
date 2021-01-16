@@ -21,21 +21,20 @@
   };
 
   const onClickTree = (e) => {
-    console.log(e.detail)
-  }
+    console.log(e.detail);
+  };
 
   const checkSelectedBranch = () => {
     return new Promise((resolve, reject) => {
       const nodes = treeRef.getCheckedNodes();
-      if(nodes && (nodes.length !== 1  || nodes[0].type != 10)) {
+      if (nodes && (nodes.length !== 1 || nodes[0].type != 10)) {
         snackbarRef.show(T('SYS.MSG.PLEASE_SELECT_BRANCH'));
         resolve(false);
       } else {
         resolve(true);
       }
-      
     });
-  }
+  };
 </script>
 
 <Snackbar bind:this={snackbarRef} />
@@ -47,5 +46,5 @@
   id="changeBranchModalId"
   menuPath="system/branch/change-branch"
   bind:this={modalRef}>
-    <TreeView bind:this={treeRef} data$={OrgStore.branches$} radioType="all" on:click={onClickTree}/>
+  <TreeView bind:this={treeRef} data$={OrgStore.branches$} radioType="all" on:click={onClickTree} />
 </Modal>

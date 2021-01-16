@@ -43,7 +43,6 @@
   let firstTimes = true;
   let prevTotalMessagesCount = 0;
 
-
   const drawingList = [];
 
   const reload = () => {
@@ -308,54 +307,51 @@
 {/each}
 
 <div class="notification">
-    <div
-      style="position: relative;"
-      on:mouseover={() => onMouseover('chatDropdown')}
-      on:mouseout={() => onMouseout('chatDropdown')}
-      class="notify-icon {countChat === 0 ? 'notify-icon-disabled' : ''}">
-      <ChatIcon />
-      {#if countChat > 0}
-        <div class="badge">{countChat}</div>
-      {/if}
+  <div
+    style="position: relative;"
+    on:mouseover={() => onMouseover('chatDropdown')}
+    on:mouseout={() => onMouseout('chatDropdown')}
+    class="notify-icon {countChat === 0 ? 'notify-icon-disabled' : ''}">
+    <ChatIcon />
+    {#if countChat > 0}
+      <div class="badge">{countChat}</div>
+    {/if}
 
-      <div id="chatDropdown" class="right-dropdown-content" style="height: 600px;">
-        <MessageDropdownContent type={NotifyType.Chat} on:click={(e) => onClickItem(e, 'chatDropdown')} data={chat} />
-      </div>
+    <div id="chatDropdown" class="right-dropdown-content" style="height: 600px;">
+      <MessageDropdownContent type={NotifyType.Chat} on:click={(e) => onClickItem(e, 'chatDropdown')} data={chat} />
     </div>
+  </div>
 
-    <div
-      style="position: relative; margin-left: 20px;"
-      on:mouseover={() => onMouseover('functionalDropdown')}
-      on:mouseout={() => onMouseout('functionalDropdown')}
-      class="notify-icon {countFunctional === 0 ? 'notify-icon-disabled' : ''}">
-      <BellIcon />
+  <div
+    style="position: relative; margin-left: 20px;"
+    on:mouseover={() => onMouseover('functionalDropdown')}
+    on:mouseout={() => onMouseout('functionalDropdown')}
+    class="notify-icon {countFunctional === 0 ? 'notify-icon-disabled' : ''}">
+    <BellIcon />
 
-      {#if countFunctional > 0}
-        <div class="badge">{countFunctional}</div>
-      {/if}
+    {#if countFunctional > 0}
+      <div class="badge">{countFunctional}</div>
+    {/if}
 
-      <div id="functionalDropdown" class="right-dropdown-content" style="height: 600px;">
-        <MessageDropdownContent
-          type={NotifyType.Functional}
-          on:click={(e) => onClickItem(e, 'functionalDropdown')}
-          data={functional} />
-      </div>
+    <div id="functionalDropdown" class="right-dropdown-content" style="height: 600px;">
+      <MessageDropdownContent
+        type={NotifyType.Functional}
+        on:click={(e) => onClickItem(e, 'functionalDropdown')}
+        data={functional} />
     </div>
+  </div>
 
-    <div
-      style="position: relative; margin-left: 20px;"
-      on:mouseover={() => onMouseover('alarmDropdown')}
-      on:mouseout={() => onMouseout('alarmDropdown')}
-      class="notify-icon {countAlarm === 0 ? 'notify-icon-disabled' : ''}">
-      <AlertIcon />
-      {#if countAlarm > 0}
-        <div class="badge">{countAlarm}</div>
-      {/if}
-      <div id="alarmDropdown" class="right-dropdown-content" style="height: 600px;">
-        <MessageDropdownContent
-          type={NotifyType.Alarm}
-          on:click={(e) => onClickItem(e, 'alarmDropdown')}
-          data={alarm} />
-      </div>
+  <div
+    style="position: relative; margin-left: 20px;"
+    on:mouseover={() => onMouseover('alarmDropdown')}
+    on:mouseout={() => onMouseout('alarmDropdown')}
+    class="notify-icon {countAlarm === 0 ? 'notify-icon-disabled' : ''}">
+    <AlertIcon />
+    {#if countAlarm > 0}
+      <div class="badge">{countAlarm}</div>
+    {/if}
+    <div id="alarmDropdown" class="right-dropdown-content" style="height: 600px;">
+      <MessageDropdownContent type={NotifyType.Alarm} on:click={(e) => onClickItem(e, 'alarmDropdown')} data={alarm} />
     </div>
+  </div>
 </div>

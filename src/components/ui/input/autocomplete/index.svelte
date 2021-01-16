@@ -2,7 +2,7 @@
   import { onMount, createEventDispatcher } from 'svelte';
   import { SObject } from 'src/lib/sobject';
   import { StringUtil } from 'src/lib/string-util';
-  import {App} from 'src/lib/constants';
+  import { App } from 'src/lib/constants';
   import { BehaviorSubject, Observable } from 'rxjs';
   import { map, switchMap, tap, filter, distinctUntilChanged } from 'rxjs/operators';
   import { fromEvents } from 'src/lib/rx';
@@ -12,7 +12,7 @@
   import { passwordChar } from './helper';
   import { Browser } from 'src/lib/browser';
   import SearchIcon from 'src/icons/search.svelte';
-  import {of} from 'rxjs';
+  import { of } from 'rxjs';
 
   export let columns;
   export let height = '50vh';
@@ -27,7 +27,7 @@
   export let container = undefined;
   export let searching$ = new BehaviorSubject(false);
   export let useInternalProgress = true;
-  
+
   const isLogged$ = of(false);
 
   let inputWrapperRef;
@@ -44,7 +44,7 @@
   let markData = [];
   let disableAutocomplete;
   let showBackButton;
-  
+
   const dispatch = createEventDispatcher();
   const displayChar = passwordChar();
   const isSmartPhone = window.isSmartPhone;
@@ -78,16 +78,15 @@
       dropdownFocused = false;
     }, 200);
 
-    
     const ele = document.querySelector(`#${'dropdown' + id}`);
     ele && ele.classList.remove('show-auto-dropdown');
   };
 
   const didSearch = (data) => {
     if (data && data.length > 0) {
-      //highligth text 
+      //highligth text
       const temp = SObject.clone(data);
-      
+
       if (type !== 'password') {
         markData = temp.map((item) => {
           const markedName = StringUtil.markStringSearch(item.name, textSearch, true);
@@ -123,11 +122,11 @@
     if (!isSmartPhone && !dropdownFocused && event.code === 'Enter') {
       if (type === 'password') {
         const pw = getPassword();
-        if( !StringUtil.isEmpty(pw)) {
+        if (!StringUtil.isEmpty(pw)) {
           dispatch('change', {
-          id: SearchType.Login,
-          name: pw,
-        });
+            id: SearchType.Login,
+            name: pw,
+          });
         }
       } else if (!$isLogged$) {
         dispatch('change', {
@@ -172,7 +171,6 @@
         }),
         switchMap((event) => {
           if (type !== 'password') {
-      
             return searchFunc(event.value);
           } else {
             return searchFunc(getPassword());
@@ -229,8 +227,7 @@
 
   export const loadSettings = () => {
     return new Observable((observer) => {
-      SettingsStore
-        .getUserSettings({elementId: id, menuPath})
+      SettingsStore.getUserSettings({ elementId: id, menuPath })
         .then((res) => {
           const data = res.data;
           const idFilter = data.filter((it) => it.key === 'autoId');
@@ -270,7 +267,6 @@
   });
 
   const selectItem = (data) => {
-    
     if (data.length >= 0) {
       if (data[0] && data[0].name) {
         if (type !== 'password') {
@@ -289,7 +285,7 @@
             values: [data[0].id, textSearch],
           });
         }
-        
+
         dispatch('change', {
           id: data[0].id,
           name: textSearch,
@@ -349,7 +345,6 @@
   };
 
   const onKeyup = (event) => {
-
     if (type !== 'password') {
       return;
     }
@@ -382,10 +377,9 @@
     if (!isSmartPhone) {
       return;
     }
-    
+
     if (!dropdownFocused) {
       if (type === 'password') {
-       
         dispatch('change', {
           id: SearchType.Login,
           name: getPassword(),
@@ -451,7 +445,7 @@
   </div>
   <div class="search-progress">
     {#if $searching$}
-     {@html App.PROGRESS_BAR}
+      {@html App.PROGRESS_BAR}
     {/if}
   </div>
   <div style={`height: ${height};`} class="auto-dropdown {className}" id={'dropdown' + id}>

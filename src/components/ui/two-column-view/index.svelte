@@ -21,7 +21,7 @@
     // loadSettings
     SettingsStore.getUserSettings({
       menuPath,
-      elementId: 'leftForm'
+      elementId: 'leftForm',
     }).then((res) => {
       const found = res.data.find((it) => it.key === 'lastLeftWidth');
 
@@ -64,12 +64,11 @@
         gridEle.style['grid-template-columns'] = `${minLeftPane ? 0 : leftWidth} ${GUTTER_WIDTH}px auto`;
 
         SettingsStore.saveUserSettings({
-            menuPath,
-            elementId: "leftForm",
-            keys: ['lastLeftWidth'],
-            values: [leftWidth],
-          }
-        );
+          menuPath,
+          elementId: 'leftForm',
+          keys: ['lastLeftWidth'],
+          values: [leftWidth],
+        });
       },
     });
   };

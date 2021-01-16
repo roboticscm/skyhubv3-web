@@ -24,7 +24,6 @@ export const getUrlParam = (param) => {
   }
 };
 
-
 export const getTargetIdFromUrlParam = () => {
   const url = new URL(AppStore.urlParam);
   if (url) {

@@ -40,7 +40,7 @@
 
     const gridEle = document.querySelector('.layout-container');
     gridEle.style['grid-template-rows'] = `${defaultHeaderHeight} ${App.GUTTER_WIDTH}px auto`;
-    /// TODO 
+    /// TODO
     // appStore.theme$.subscribe((theme) => {
     //   gridEle.style['grid-template-rows'] = `${defaultHeaderHeight} ${App.GUTTER_WIDTH}px auto`;
     // });

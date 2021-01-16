@@ -25,15 +25,14 @@
   const onClick = (e) => {
     const _path = e.path.replace('--', '/');
     const comUri = `features${_path}/index.svelte`;
-    dispatch('navigate', {path: _path, menuId: e.menuId});
+    dispatch('navigate', { path: _path, menuId: e.menuId });
     currentComponentUri$.next(comUri);
   };
-
 </script>
 
 <div
   id={__path.replace('/', '')}
-  on:click={() => onClick({path: __path, menuId})}
+  on:click={() => onClick({ path: __path, menuId })}
   class="{className}
   {isActiveComponent ? activeClass : ''}">
   {@html name}

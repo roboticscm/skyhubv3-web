@@ -5,7 +5,7 @@
 // });
 
 export class SearchType {
-  static Login = "Login";
-  static LoginWithRemember = "LoginWithRemember";
-  static Search = "Search";
+  static Login = 'Login';
+  static LoginWithRemember = 'LoginWithRemember';
+  static Search = 'Search';
 }

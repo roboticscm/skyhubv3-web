@@ -1,17 +1,17 @@
 <script>
-    import { onMount } from "svelte";
-    import LoginPage from "src/features/system/auth/login.svelte";
-    import LoadingPage from "src/pages/loading/index.svelte";
-    import { Authentication } from "src/lib/authentication"; 
+  import { onMount } from 'svelte';
+  import LoginPage from 'src/features/system/auth/login.svelte';
+  import LoadingPage from 'src/pages/loading/index.svelte';
+  import { Authentication } from 'src/lib/authentication';
 
-    onMount(() => {
-        document.body.removeChild(document.getElementById("loadScreen"));
-        document.body.style.cursor = "auto";
-    });
+  onMount(() => {
+    document.body.removeChild(document.getElementById('loadScreen'));
+    document.body.style.cursor = 'auto';
+  });
 </script>
 
 {#if Authentication.isLoggedIn()}
-    <LoadingPage />
+  <LoadingPage />
 {:else}
-    <LoginPage />
+  <LoginPage />
 {/if}

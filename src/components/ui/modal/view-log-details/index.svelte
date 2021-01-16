@@ -1,6 +1,6 @@
 <script>
-  import Modal from "src/components/ui/modal/base/index.svelte";
-  import { T } from "src/lib/locale";
+  import Modal from 'src/components/ui/modal/base/index.svelte';
+  import { T } from 'src/lib/locale';
   import JsonViewer from 'json-viewer-js';
   import { SJSON } from 'src/lib/sjson';
 
@@ -18,11 +18,11 @@
     title = _title;
     document.querySelector('#jsonView').innerHTML = '';
     new JsonViewer({
-        container: document.querySelector('#jsonView'), 
-        data: SJSON.stringify(SJSON.parse(json)), 
-        theme: 'light', 
-        expand: true 
-      });
+      container: document.querySelector('#jsonView'),
+      data: SJSON.stringify(SJSON.parse(json)),
+      theme: 'light',
+      expand: true,
+    });
     modalRef.show();
   };
 
@@ -43,8 +43,6 @@
   title={T('SYS.LABEL.LOG_DETAILS') + (title ? ' - ' + title : '')}
   {id}
   bind:this={modalRef}>
-  <div id = "jsonView">
-      
-  </div>
-    
+  <div id="jsonView" />
+
 </Modal>

@@ -1,10 +1,9 @@
 <script>
-    import { Authentication } from 'src/lib/authentication';
+  import { Authentication } from 'src/lib/authentication';
+</script>
 
-  </script>
-  
-  <div class="water-mark">
-    {#if Authentication.getUsername()}
-      {@html '(' + Authentication.getUsername() + ')'}
-    {/if}
-  </div>
+<div class="water-mark">
+  {#if Authentication.getUsername()}
+    {@html '(' + Authentication.getUsername() + ')'}
+  {/if}
+</div>

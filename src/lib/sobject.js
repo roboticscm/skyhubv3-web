@@ -166,6 +166,15 @@ export class SObject {
     return obj;
   }
 
+  static convertArrayFieldsToCamelCase(array) {
+    const result = [];
+    for (let row of array) {
+      result.push(SObject.convertFieldsToCamelCase(row));
+    }
+
+    return result;
+  }
+
   static removeHtmlTagArrayObject(arrObj) {
     if (!arrObj) {
       return arrObj;

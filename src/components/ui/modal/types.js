@@ -1,13 +1,12 @@
 import { App } from 'src/lib/constants';
 
-
 export class ModalType {
-  static alert = "alert";
-  static confirm = "confirm";
-  static confirmPassword = "confirmPassword";
-  static inputText = "inputText";
-  static inputNumber = "inputNumber";
-  static custom = "custom";
+  static alert = 'alert';
+  static confirm = 'confirm';
+  static confirmPassword = 'confirmPassword';
+  static inputText = 'inputText';
+  static inputNumber = 'inputNumber';
+  static custom = 'custom';
 }
 
 export class ModalId {
@@ -18,11 +17,10 @@ export class ModalId {
   static inputNumber = 'mdInputNumber';
 }
 
-
 export class SkyLogFilter {
   constructor() {
-      this.startDate = Date.now() - App.DEFAULT_END_TIME_FILTER_OFFSET;
-      this.endDate = Date.now();
-      this.filter = '';
+    this.startDate = Date.now() - App.DEFAULT_END_TIME_FILTER_OFFSET;
+    this.endDate = Date.now();
+    this.filter = '';
   }
 }

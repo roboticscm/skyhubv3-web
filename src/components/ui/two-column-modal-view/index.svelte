@@ -15,7 +15,7 @@
     // loadSettings
     SettingsStore.getUserSettings({
       menuPath,
-      elementId: 'leftModal'
+      elementId: 'leftModal',
     }).then((res) => {
       const found = res.data.find((it) => it.key === 'lastLeftWidth');
 
@@ -52,11 +52,11 @@
         const [leftWidth] = gridEle.style['grid-template-columns'].split(' ');
 
         SettingsStore.saveUserSettings({
-            menuPath,
-            elementId: `leftModal`,
-            keys: ['lastLeftWidth'],
-            values: [leftWidth],
-          });
+          menuPath,
+          elementId: `leftModal`,
+          keys: ['lastLeftWidth'],
+          values: [leftWidth],
+        });
       },
     });
   };

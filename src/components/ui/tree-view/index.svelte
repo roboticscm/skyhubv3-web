@@ -212,7 +212,7 @@
 
   // @ts-ignore
   $: {
-    (window['$']).fn.zTree.destroy(window['$']('#' + id));
+    window['$'].fn.zTree.destroy(window['$']('#' + id));
     const setting = {
       check: {
         enable: isCheckableNode || radioType,
@@ -257,7 +257,7 @@
   }
 
   onDestroy(() => {
-    (window['$']).fn.zTree.destroy(window['$']('#' + id));
+    window['$'].fn.zTree.destroy(window['$']('#' + id));
   });
 </script>
 

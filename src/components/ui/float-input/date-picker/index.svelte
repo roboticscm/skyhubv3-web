@@ -110,7 +110,7 @@
         currentEndDate = timePicker ? end.toDate() : end.startOf('day');
         startValue = timePicker ? start.valueOf() : start.startOf('day').valueOf();
         endValue = timePicker ? end.valueOf() : end.startOf('day').valueOf();
-        dispatch('change', {startValue, endValue});
+        dispatch('change', { startValue, endValue });
       },
     );
 
@@ -149,7 +149,7 @@
     currentEndDate = null;
     startValue = null;
     endValue = null;
-    dispatch('change', {startValue, endValue});
+    dispatch('change', { startValue, endValue });
   };
 
   export const setStartValueInTimestamp = (timestamp) => {

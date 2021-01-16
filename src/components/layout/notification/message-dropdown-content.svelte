@@ -28,9 +28,9 @@
   export let data;
   export let type;
 
-
-  let filteredData = [], groupFilteredData = [];
-  let searchProgress$ =  new BehaviorSubject(false);
+  let filteredData = [],
+    groupFilteredData = [];
+  let searchProgress$ = new BehaviorSubject(false);
   let textSearch = '';
   let showSearch = false;
 

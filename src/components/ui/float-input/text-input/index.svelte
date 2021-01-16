@@ -31,7 +31,8 @@
     type="search"
     {readonly}
     {disabled}
-    class="{checked !== undefined ? 'check' : ''} {rightCheck ? 'right' : ''} floating__input {className}"
+    class="{checked !== undefined ? 'check' : ''}
+    {rightCheck ? 'right' : ''} floating__input {className}"
     bind:value
     {autocomplete}
     bind:this={inputRef}

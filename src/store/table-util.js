@@ -2,14 +2,14 @@ import { RxHttp } from 'src/lib/rx-http';
 import { BaseUrl } from 'src/lib/constants';
 import { LoginInfo } from 'src/store/login-info';
 import { Browser } from 'src/lib/browser';
-import Bowser from "bowser";
+import Bowser from 'bowser';
 
 export class TableUtilStore {
   static findSimpleList(params) {
     return RxHttp.get({
       baseUrl: BaseUrl.SYSTEM,
       url: 'table-util/simple-list',
-      params
+      params,
     });
   }
 
@@ -17,7 +17,7 @@ export class TableUtilStore {
     return RxHttp.get({
       baseUrl: BaseUrl.SYSTEM,
       url: `table-util/${id}`,
-      params: {tableName}
+      params: { tableName },
     });
   }
 
@@ -33,8 +33,8 @@ export class TableUtilStore {
       url: 'table-util',
       params: {
         tableName,
-        ids: ids.join(',')
-      }
+        ids: ids.join(','),
+      },
     });
   }
 
@@ -42,7 +42,7 @@ export class TableUtilStore {
     return RxHttp.get({
       baseUrl: BaseUrl.SYSTEM,
       url: 'table-util/has-any-deleted-record',
-      params: {tableName, onlyMe}
+      params: { tableName, onlyMe },
     });
   }
 
@@ -50,7 +50,11 @@ export class TableUtilStore {
     return RxHttp.get({
       baseUrl: BaseUrl.SYSTEM,
       url: 'table-util/find-deleted-records',
-      params: {tableName,  columns: columns.map((it) => `t.${it}`).join(','), onlyMe}
+      params: {
+        tableName,
+        columns: columns.map((it) => `t.${it}`).join(','),
+        onlyMe,
+      },
     });
   }
 
@@ -58,8 +62,8 @@ export class TableUtilStore {
     return RxHttp.put({
       baseUrl: BaseUrl.SYSTEM,
       url: 'table-util/restore-or-forever-delete',
-      params: {tableName, deleteIds, restoreIds}
-    }); 
+      params: { tableName, deleteIds, restoreIds },
+    });
   }
 
   static restoreOrForeverDeleteWithLog(tableName, deleteIds, restoreIds, reason, fieldName = 'name') {
@@ -75,13 +79,13 @@ export class TableUtilStore {
       device: browser.platform.type,
       os: browser.os.name,
       browser: browser.browser.name,
-      fieldName
+      fieldName,
     };
 
     return RxHttp.put({
       baseUrl: BaseUrl.SYSTEM,
       url: 'table-util/restore-or-forever-delete',
-      params: reason ? { ...param, reason} : { ...param}
-    }); 
+      params: reason ? { ...param, reason } : { ...param },
+    });
   }
 }

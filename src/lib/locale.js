@@ -101,19 +101,20 @@ export const findLanguage = (companyId, locale, initial = false) => {
       url: initial ? 'locale-resource/get-initial' : 'locale-resource',
       params: {
         companyId,
-        locale
-        }
-    }).subscribe((res) => {
+        locale,
+      },
+    }).subscribe(
+      (res) => {
         I18N = res.data;
         convertLocaleResource();
         resolve(res.data);
-      }, (err) => {
-        reject(err)
-      });
+      },
+      (err) => {
+        reject(err);
+      },
+    );
   });
 };
-
-
 
 const defaultValue = (key) => {
   return key

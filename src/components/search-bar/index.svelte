@@ -11,7 +11,6 @@
   import { Authentication } from 'src/lib/authentication';
   // import { loadMenuAndUserSettings } from 'src/main';
 
-
   export let id;
   export let menuPath;
 
@@ -35,25 +34,27 @@
       placeholder = T('SYS.LABEL.LOGIN_OR_SEARCH_HERE');
     }
   };
- 
+
   recalcPlaceholder(Authentication.isLoggedIn());
 
   const doLogin = (username, password) => {
     searching$.next(true);
-    Authentication.loginAPI(username, password).then((res) => {
-      if(res.accessToken) {
-        if(remember) {
-            localStorage.setItem("username", username)
-        } else {
-            sessionStorage.setItem("username", username)
+    Authentication.loginAPI(username, password)
+      .then((res) => {
+        if (res.accessToken) {
+          if (remember) {
+            localStorage.setItem('username', username);
+          } else {
+            sessionStorage.setItem('username', username);
+          }
+          didLogin(res);
+          searching$.next(false);
         }
-        didLogin(res);
+      })
+      .catch((err) => {
         searching$.next(false);
-      }
-    }).catch((err) => {
-      searching$.next(false);
-      snackbarRef && snackbarRef.show(T(`SYS.MSG.AUTHENTICATION_ERROR`));
-    });
+        snackbarRef && snackbarRef.show(T(`SYS.MSG.AUTHENTICATION_ERROR`));
+      });
   };
 
   const didLogin = (loginInfo) => {
@@ -62,7 +63,7 @@
     setTimeout(() => {
       inputRef.clear();
       inputRef.focus();
-    }, 1000)
+    }, 1000);
     localStorage.setItem('remember', remember);
     Authentication.login(loginInfo.accessToken, loginInfo.refreshToken, loginInfo.userId);
   };
@@ -129,7 +130,6 @@
         },
         { id: SearchType.Search, name: `${T('SYS.LABEL.SEARCH_WITH')} <b>${textSearch}</b>` },
       ];
-      
     } else {
       // TODO
       data = [{ id: SearchType.Search, name: `${T('SYS.LABEL.SEARCH_AFTER_LOGGED_IN')} <b>${textSearch}</b>` }];
@@ -164,7 +164,7 @@
 <div class="search-bar-wrapper search-bar-wrapper-rounded-border" bind:this={searchWrapperRef}>
 
   <Autocomplete
-    useInternalProgress = {false}
+    useInternalProgress={false}
     {searching$}
     container={searchWrapperRef}
     columns={[{ name: 'name', type: 'html' }]}

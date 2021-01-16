@@ -52,12 +52,12 @@
   });
 
   const onChanged = (instance, cell, x, y, value) => {
-    dispatch('changed', {instance, cell, x, y, value });
+    dispatch('changed', { instance, cell, x, y, value });
   };
 
   // TODO: param not test
   const onBeforeChange = (instance, cell, x, y, value) => {
-    dispatch('beforeChange', {instance, cell, x, y, value });
+    dispatch('beforeChange', { instance, cell, x, y, value });
   };
 
   const recalculateColumnWidth = () => {
@@ -153,8 +153,7 @@
 
   const loadSettings = () => {
     fireResizeEvent = false;
-    SettingsStore
-      .getUserSettings({elementId: id, menuPath})
+    SettingsStore.getUserSettings({ elementId: id, menuPath })
       .then((res) => {
         const data = res.data;
         if (data) {
