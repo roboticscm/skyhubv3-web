@@ -255,7 +255,7 @@
     fireResizeEvent = true;
     columns.map((col, index) => {
       keys.push('col' + index);
-      values.push(col.width);
+      values.push(`${col.width}`);
     });
     SettingsStore.saveUserSettings({
       menuPath,

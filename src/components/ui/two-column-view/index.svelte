@@ -67,7 +67,7 @@
           menuPath,
           elementId: 'leftForm',
           keys: ['lastLeftWidth'],
-          values: [leftWidth],
+          values: [`${leftWidth}`],
         });
       },
     });

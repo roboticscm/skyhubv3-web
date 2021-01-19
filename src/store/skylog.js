@@ -4,6 +4,7 @@ import { LoginInfo } from 'src/store/login-info';
 import { Browser } from 'src/lib/browser';
 import Bowser from 'bowser';
 import { App } from 'src/lib/constants';
+import { SJSON } from 'src/lib/sjson';
 
 export class SkyLogStore {
   static findLog(menuPath, startDate = Date.now() - App.DEFAULT_END_TIME_FILTER_OFFSET, endDate = Date.now()) {
@@ -35,7 +36,7 @@ export class SkyLogStore {
         os: browser.os.name,
         browser: browser.browser.name,
         shortDescription,
-        description,
+        description: SJSON.stringify(description),
         reason,
       },
     });

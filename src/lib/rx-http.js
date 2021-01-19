@@ -6,6 +6,7 @@ import { catchError, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Authentication } from './authentication';
 
+let times = 1;
 export class RxHttp {
   static callApi(method, baseUrl, url, params, jsonData, headers, auth) {
     let fullUrl;
@@ -37,6 +38,12 @@ export class RxHttp {
             Authentication.logout();
           }
         } else if (err.response.status === 401) {
+          times++;
+          if (times > 3) {
+            if (Authentication.isLoggedIn()) {
+              Authentication.logout();
+            }
+          }
           await Authentication.refreshAPI(Authentication.getRefreshToken());
           return { refresh: true };
         }
@@ -46,6 +53,7 @@ export class RxHttp {
         if (res.refresh) {
           return RxHttp.callApi(method, baseUrl, url, params, jsonData, headers, auth);
         } else {
+          times = 1;
           return of(res);
         }
       }),

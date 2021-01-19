@@ -3,6 +3,7 @@ import { BaseUrl } from 'src/lib/constants';
 import { LoginInfo } from './login-info';
 import { findLanguage } from 'src/lib/locale';
 import { OrgStore } from 'src/features/system/org/store';
+import { SObject } from 'src/lib/sobject';
 
 export class SettingsStore {
   static saveUserSettings(obj, useBranch = true) {
@@ -36,11 +37,12 @@ export class SettingsStore {
         url: 'user-settings/initial',
       }).subscribe((res) => {
         if (res.data && res.data.length > 0) {
-          LoginInfo.companyId$.next(res.data[0].companyId);
-          LoginInfo.companyName$.next(res.data[0].companyName);
-          LoginInfo.branchId$.next(res.data[0].branchId);
-          LoginInfo.branchName$.next(res.data[0].branchName);
-          LoginInfo.departmentId$.next(res.data[0].departmentId);
+          const dt = SObject.convertFieldsToCamelCase(res.data[0]);
+          LoginInfo.companyId$.next(dt.companyId);
+          LoginInfo.companyName$.next(dt.companyName);
+          LoginInfo.branchId$.next(`${dt.branchId}`);
+          LoginInfo.branchName$.next(dt.branchName);
+          LoginInfo.departmentId$.next(`${dt.departmentId}`);
         }
 
         SettingsStore.getUserSettings({

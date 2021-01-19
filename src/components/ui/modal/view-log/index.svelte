@@ -117,12 +117,12 @@
 
   $: {
     SkyLogStore.findLog(LoginInfo.menuPath$.value, form.startDate, form.endDate).subscribe((res) => {
-      data = res.data.map((row) => {
+      data = res.data ? res.data.map((row) => {
         row.date = row.date ? SDate.convertMillisecondToDateTimeString(parseInt(row.date)) : '';
         row.action = JSON.parse(row.description).action;
         row.view = T('SYS.LABEL.VIEW');
         return row;
-      });
+      }) : [];
     });
   }
 </script>

@@ -254,8 +254,8 @@
 
     headerEle &&
       headerEle.each(function(col) {
-        keys.push(col);
-        values.push(window['$'](this).width());
+        keys.push(`col${col}`);
+        values.push(`${window['$'](this).width()}`);
       });
 
     SettingsStore.saveUserSettings({
@@ -272,7 +272,7 @@
     SettingsStore.getUserSettings({ element: id, menuPath }).then((res) => {
       if (res.data && res.data.length > 0) {
         headerEle.each(function(col) {
-          const filter = res.data.filter((it) => it.key == col);
+          const filter = res.data.filter((it) => it.key === `col${col}`);
           if (filter && filter.length > 0) {
             window['$'](this).width(+filter[0].value);
           }

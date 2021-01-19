@@ -476,7 +476,6 @@ export class ViewStore {
                 );
 
                 if (dataChanged.length > 0) {
-                  console.log('dataChanged ', dataChanged);
                   MenuControlStore.saveOrDelete({
                     menuPath: this.menuPath,
                     menuControls: dataChanged,
@@ -498,12 +497,12 @@ export class ViewStore {
 
     this.verifyAction(buttonId, confirmCallback, scRef.confirmPasswordModalRef()).then((_) => {
       SkyLogStore.findLog(this.menuPath).subscribe((res) => {
-        const data = res.data.map((row) => {
+        const data = res.data ? res.data.map((row) => {
           row.date = row.date ? SDate.convertMillisecondToDateTimeString(parseInt(row.date)) : '';
           row.action = JSON.parse(row.description).action;
           row.view = T('SYS.LABEL.VIEW');
           return row;
-        });
+        }) : [];
         scRef
           .viewLogModalRef()
           .show(data)

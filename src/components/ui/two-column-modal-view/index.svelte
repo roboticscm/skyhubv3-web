@@ -55,7 +55,7 @@
           menuPath,
           elementId: `leftModal`,
           keys: ['lastLeftWidth'],
-          values: [leftWidth],
+          values: [`${leftWidth}`],
         });
       },
     });

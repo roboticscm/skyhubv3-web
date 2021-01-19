@@ -17,7 +17,7 @@
       SettingsStore.saveUserSettings(
         {
           keys: ['departmentId', 'menuPath'],
-          values: [urlDepartmentId, urlMenuPath],
+          values: [`${urlDepartmentId}`, urlMenuPath],
         },
         false,
       ).then(() => {

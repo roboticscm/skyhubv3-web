@@ -17,7 +17,7 @@
     OrgStore.findRoledDepartments($branchId$).subscribe(() => {
       OrgStore.getLastRoledDepartmentId($branchId$).subscribe((res) => {
         if (res.data && res.data.length > 0) {
-          departmentId$.next(res.data[0].depId);
+          departmentId$.next(`${res.data[0].depId}`);
         }
       });
     });
@@ -42,14 +42,14 @@
       SettingsStore.saveUserSettings(
         {
           keys: ['departmentId'],
-          values: [$departmentId$],
+          values: [`${$departmentId$}`],
         },
         false,
       ),
 
       SettingsStore.saveUserSettings({
         keys: ['departmentId'],
-        values: [$departmentId$],
+        values: [`${$departmentId$}`],
       }),
     ]).then(() => {
       if (!firstTime) {

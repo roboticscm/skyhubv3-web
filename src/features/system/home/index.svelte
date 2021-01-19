@@ -12,6 +12,7 @@
   import Notification from 'src/components/layout/notification/index.svelte';
   import UserProfiles from 'src/components/layout/user-profiles/index.svelte';
   import WaterMark from 'src/components/layout/water-mark/index.svelte';
+  import { SObject } from 'src/lib/sobject'
 
   const { isDetailPage$ } = AppStore;
 
@@ -21,6 +22,7 @@
   const events = new EventSource(`${BaseUrl.SYSTEM}/notify`);
   events.onmessage = (res) => {
     const json = JSON.parse(res.data);
+    json.data = SObject.convertFieldsToCamelCase(json.data);
     NotifyListener.payload$.next(json);
   };
 </script>
